@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/index.css">
+    <title>Loggit</title>
+</head>
+
+<body>
+
+    <nav class="section">
+        <div class="left">
+            <h3> <span>L</span>oggit</h3>
+        </div>
+        <div class="right">
+            <h5>Hi
+                <%= user.username %>!</h5>
+            <h5 class="donate">Donate</h5>
+        </div>
+    </nav>
+
+    <div class="heading section">
+        <h1>Securely Share Your Account </h1>
+    </div>
+
+    <div class="options section">
+        <div class="share">
+            <h5>Share Your account On</h5>
+            <h5 class="host">
+                <%= user.host %>
+            </h5>
+            <i class="fa fa-share-alt"></i>
+            <p style="display: none;">
+                <%= user._id %>
+            </p>
+            <p class="get_code">Generate Code</p>
+        </div>
+        <div class="connect">
+            <h5>Gain access to account</h5>
+            <i class="fa fa-users"></i>
+            <input type="text" placeholder="Enter code" name="access_code" id="access_code">
+        </div>
+    </div>
+
+    <div class="info section">
+        <p>Share your account across users without sharing credentials.Your account security is our prirority. We won't share your account with anyone, it is safe with us. We share the account to the website you were when logging into your account </p>
+    </div>
+
+    <script src="/js/index.js"></script>
+</body>
+
+</html>

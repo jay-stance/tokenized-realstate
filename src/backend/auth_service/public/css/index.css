@@ -1,0 +1,190 @@
+:root {
+    --main_bg: #3333ec;
+    --font: "poppins"
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+p {
+    font-family: var(--font);
+}
+
+h1 {
+    font-family: var(--font);
+    color: #16194F;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-family: var(--font);
+}
+
+h5 {
+    font-family: var(--font);
+    font-size: 1rem;
+}
+
+body {
+    background: #F2F6FF;
+    /* background: #fff; */
+}
+
+.section {
+    padding: 0 2rem;
+}
+
+nav {
+    width: 100%;
+    height: 10vh;
+    padding: 2rem 1rem !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); */
+}
+
+nav .left h3 {
+    color: #8d8989;
+    animation: color_grad 3s infinite;
+}
+
+@keyframes color_grad {
+    0% {
+        color: black;
+    }
+    50% {
+        color: #8d8989;
+    }
+}
+
+nav .left h3 span {
+    color: black;
+}
+
+nav .right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+nav .right h5 {
+    padding: 1rem;
+    margin-right: 1rem;
+}
+
+nav .right .donate {
+    margin-right: 0;
+    background: var(--main_bg);
+    color: #fff;
+    border-radius: 100px;
+    padding: .5rem 1.3rem;
+}
+
+
+/* heading starts here  */
+
+.heading {
+    margin: 2rem 0;
+    width: 100%;
+}
+
+.heading h1 {
+    width: 100%;
+    text-align: center;
+}
+
+
+/* options starts here  */
+
+.options {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options div {
+    width: 400px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4rem;
+    border-radius: 10px;
+    padding: 1.5rem 1rem;
+    border: 1px solid #ee300f;
+}
+
+.options .connect {
+    margin-right: 0;
+}
+
+.options div:hover {
+    border: 1px solid var(--main_bg);
+    transition: all .5s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.options div:hover i {
+    transform: scale(1.2);
+    color: var(--main_bg);
+    transition: all .5s ease-in-out;
+}
+
+.options div h5 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.options div i {
+    font-size: 3rem;
+    color: #ee300f;
+    margin: 2rem 0;
+}
+
+.options div p {
+    padding: .5rem 1rem;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50px;
+    margin-top: 1rem;
+    background: var(--main_bg);
+    cursor: pointer;
+    min-width: 75%;
+    text-align: center;
+}
+
+.options div input {
+    outline: none;
+    padding: .8rem 1rem;
+    border-radius: 50px;
+    margin-top: 1rem;
+    border: 1px solid var(--main_bg);
+    min-width: 75%;
+}
+
+.host {
+    background: #fff;
+    padding: .5rem;
+    border-radius: 10px;
+    display: none;
+}
+
+
+/* info starts here  */
+
+.info {
+    width: 100%;
+}
+
+.info p {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+    text-align: center;
+}

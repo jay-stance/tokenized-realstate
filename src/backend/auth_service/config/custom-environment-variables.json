@@ -1,0 +1,4 @@
+{
+    "db": "mongodb://localhost:27017/Logit_db",
+    "jwt_key": "jwtpk"
+}

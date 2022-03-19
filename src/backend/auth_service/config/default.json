@@ -1,0 +1,4 @@
+{
+    "db": "mongodb+srv://admin:Sc123456@sc.uxrjw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwt_key": "oijrfijwihiwii"
+}
