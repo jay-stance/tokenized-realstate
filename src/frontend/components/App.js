@@ -11,6 +11,7 @@ import MyPurchases from './MyPurchases.js'
 import Login from "./Login";
 import Signup from "./Signup";
 import Admin from "./Admin";
+import Detail from "./Detail";
 import MarketplaceAbi from '../contractsData/Marketplace.json'
 import MarketplaceAddress from '../contractsData/Marketplace-address.json'
 import NFTAbi from '../contractsData/NFT.json'
@@ -95,6 +96,9 @@ function App() {
               {localStorage.getItem("loggedIn") ? <Route path="/Admin" element={
                 <Admin marketplace={marketplace} nft={nft} />
               } />: null}
+              <Route path="detail/:name/:id" element={
+                <Detail marketplace={marketplace} nft={nft} account={account} />
+              }  />
             </Routes>
           )}
         </div>

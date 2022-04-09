@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
-import background from "./home.webp"
+import background from "./home.webp";
+import {Link} from "react-router-dom"
 
 const Home = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true)
@@ -13,7 +13,7 @@ const Home = ({ marketplace, nft }) => {
     let items = []
     for (let i = 1; i <= itemCount; i++) {
       const item = await marketplace.items(i)
-      if (!item.sold && item.approved) {
+      if (!item.sold && item.approved && !item.banned) {
         // get uri url from nft contract
         const uri = await nft.tokenURI(item.tokenId)
         // use uri to fetch the nft metadata stored on ipfs 
@@ -34,11 +34,6 @@ const Home = ({ marketplace, nft }) => {
     }
     setLoading(false)
     setItems(items)
-  }
-
-  const buyMarketItem = async (item) => {
-    await (await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })).wait()
-    loadMarketplaceItems()
   }
 
   useEffect(() => {
@@ -73,9 +68,12 @@ const Home = ({ marketplace, nft }) => {
                   </Card.Body>
                   <Card.Footer>
                     <div className='d-grid'>
-                      <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
+                      <Link to={`/detail/${item.name}/${item.itemId}`}>
+                        View full Detail
+                      </Link>
+                      {/* <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
                         Buy for {ethers.utils.formatEther(item.totalPrice)} ETH
-                      </Button>
+                      </Button> */}
                     </div>
                   </Card.Footer>
                 </Card>

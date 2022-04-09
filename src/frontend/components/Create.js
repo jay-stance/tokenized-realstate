@@ -31,6 +31,7 @@ const Create = ({ marketplace, nft }) => {
   const createNFT = async () => {
     if (!image || !price || !name || !description) return
     try{
+      console.log("Always here man \n\n", image, price, name, address, interiorSquareFoot, rentPerToken, constructionYear, description, "\n\n\n")
       const result = await client.add(JSON.stringify({
         image, price, name, address, interiorSquareFoot, rentPerToken, constructionYear, description
       }))
@@ -50,6 +51,7 @@ const Create = ({ marketplace, nft }) => {
     // add nft to marketplace
     const listingPrice = ethers.utils.parseEther(price.toString())
     await(await marketplace.makeItem(nft.address, id, listingPrice)).wait()
+    window.location.href = "/";
   }
   return (
     <div className="container-fluid mt-5">
@@ -68,11 +70,11 @@ const Create = ({ marketplace, nft }) => {
               <Form.Control onChange={(e) => setInteriorSquareFoot(e.target.value)} value={interiorSquareFoot} size="lg" required type="text" placeholder="Interior square Foot" />
               <Form.Control onChange={(e) => setRentPerToken(e.target.value)} value={rentPerToken} size="lg" required type="text" placeholder="rent per Token" />
               <Form.Control onChange={(e) => setConstructionYear(e.target.value)} value={constructionYear} size="lg" required type="text" placeholder="Construction Year" />
-              <Form.Control onChange={(e) => setDescription(e.target.value)} size="lg" required as="textarea" placeholder="Description" />
-              <Form.Control onChange={(e) => setPrice(e.target.value)} size="lg" required type="number" placeholder="Price in ETH" />
+              <Form.Control onChange={(e) => setDescription(e.target.value)} value={description} size="lg" required as="textarea" placeholder="Description" />
+              <Form.Control onChange={(e) => setPrice(e.target.value)} value={price} size="lg" required type="number" placeholder="Price in ETH" />
               <div className="d-grid px-0">
                 <Button onClick={createNFT} variant="primary" size="lg">
-                  Create & List NFT Estate!
+                  Tokenixe real Estate!
                 </Button>
               </div>
             </Row>

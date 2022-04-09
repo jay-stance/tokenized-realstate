@@ -14,16 +14,19 @@ contract Marketplace is ReentrancyGuard {
 
     struct Item {
         uint itemId;
+        uint percentRemaining;
         IERC721 nft;
         uint tokenId;
         uint price;
         address payable seller;
         bool sold;
         bool approved;
+        bool banned;
     }
 
     // itemId -> Item
     mapping(uint => Item) public items;
+    mapping(uint256 => mapping(address => uint256)) public owners;
 
     event Offered(
         uint itemId,
@@ -57,10 +60,12 @@ contract Marketplace is ReentrancyGuard {
         // add new item to items mapping
         items[itemCount] = Item (
             itemCount,
+            100,
             _nft,
             _tokenId,
             _price,
             payable(msg.sender),
+            false,
             false,
             false
         );
@@ -82,28 +87,40 @@ contract Marketplace is ReentrancyGuard {
         item.approved = true;
     } 
 
-    function purchaseItem(uint _itemId) external payable nonReentrant {
+    function setBanned(uint _itemId) external {
+        Item storage item = items[_itemId];
+        require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
+        require(!item.banned, "item is already banned");
+        item.banned = true;
+    } 
+
+    function purchaseItem(uint _itemId, uint256 _percent) external payable nonReentrant {
         uint _totalPrice = getTotalPrice(_itemId);
         Item storage item = items[_itemId];
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
-        require(msg.value >= _totalPrice, "not enough ether to cover item price and market fee");
+        require(msg.value > 0, "not enough ether to cover item price and market fee");
         require(!item.sold, "item already sold");
-        // pay seller and feeAccount
-        item.seller.transfer(item.price);
-        feeAccount.transfer(_totalPrice - item.price);
+        item.percentRemaining -= _percent;
+        owners[_itemId][msg.sender] = _percent;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
         // update item to sold
-        item.sold = true;
+        if(item.percentRemaining <= 0) {
+            item.sold = true;
+            // pay seller and feeAccount
+            item.seller.transfer(item.price);
+            feeAccount.transfer(_totalPrice - item.price);
+        }
         // transfer nft to buyer
-        item.nft.transferFrom(address(this), msg.sender, item.tokenId);
+        // item.nft.transferFrom(address(this), msg.sender, item.tokenId);
         // emit Bought event
-        emit Bought(
-            _itemId,
-            address(item.nft),
-            item.tokenId,
-            item.price,
-            item.seller,
-            msg.sender
-        );
+        // emit Bought(
+        //     _itemId,
+        //     address(item.nft),
+        //     item.tokenId,
+        //     item.price,
+        //     item.seller,
+        //     msg.sender
+        // );
     }
     function getTotalPrice(uint _itemId) view public returns(uint){
         return((items[_itemId].price*(100 + feePercent))/100);

@@ -14,7 +14,7 @@ const Admin = ({ marketplace, nft }) => {
     let items = []
     for (let i = 1; i <= itemCount; i++) {
       const item = await marketplace.items(i)
-      if (!item.approved) {
+      if (!item.approved && !item.banned) {
         // get uri url from nft contract
         const uri = await nft.tokenURI(item.tokenId)
         // use uri to fetch the nft metadata stored on ipfs 
@@ -27,10 +27,10 @@ const Admin = ({ marketplace, nft }) => {
           totalPrice,
           itemId: item.itemId,
           seller: item.seller,
-          address: item.address,
-          interiorSquareFoot: item.interiorSquareFoot,
-          rentPerToken: item.rentPerToken,
-          constructionYear: item.constructionYear,
+          address: metadata.address,
+          interiorSquareFoot: metadata.interiorSquareFoot,
+          rentPerToken: metadata.rentPerToken,
+          constructionYear: metadata.constructionYear,
           name: metadata.name,
           description: metadata.description,
           image: metadata.image
@@ -43,6 +43,11 @@ const Admin = ({ marketplace, nft }) => {
 
   const approveItem = async (item) => {
     await (await marketplace.approveItem(item.itemId)).wait()
+    loadMarketplaceItems()
+  }
+
+  const bannItem = async (item) => {
+    await (await marketplace.setBanned(item.itemId)).wait()
     loadMarketplaceItems()
   }
 
@@ -72,17 +77,20 @@ const Admin = ({ marketplace, nft }) => {
                   <Card.Body color="secondary">
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Text>
-                        description: {item.description}
-                        {/* address: {item.address}
-                        Interior square foot: {item.interiorSquareFoot}
-                        rent per token: {item.rentPerToken}
-                        Construction year: {item.constructionYear} */}
+                        description: {item.description} <br/>
+                        address: {item.address} <br/>
+                        Interior square foot: {item.interiorSquareFoot} <br/>
+                        rent per token: {item.rentPerToken} <br/>
+                        Construction year: {item.constructionYear} <br/>
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer>
                     <div className='d-grid'>
                       <Button onClick={() => approveItem(item)} variant="primary" size="lg">
                        Approve
+                      </Button>
+                      <Button onClick={() => bannItem(item)} variant="danger" size="lg">
+                       Reject
                       </Button>
                     </div>
                   </Card.Footer>
