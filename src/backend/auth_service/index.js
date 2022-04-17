@@ -46,7 +46,10 @@ app.post('/signup', async(req, res) => {
         password: hashed_password,
     });
     user = await user.save()
-    return res.cookie("x_jwt", user.gen_jwt()).send("done")
+    return res.json({
+        token: user.gen_jwt(),
+        message: "done"
+    })
 })
 
 app.post("/login", async(req, res) => {
@@ -56,13 +59,19 @@ app.post("/login", async(req, res) => {
 
     const user = await User.findOne({ email: req.body.email })
 
-    if (req.body.email == "lalalalalala@gmial.com" && req.body.password == "lalalalalala") {
-        return res.cookie("x_jwt", user.gen_jwt()).send("admin");
+    if (req.body.email == "admin@gmail.com" && req.body.password == "admin") {
+        return res.json({
+            token: user.gen_jwt(),
+            message: "admin"
+        })
     }
-
+    
     if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            return res.cookie("x_jwt", user.gen_jwt()).send("done")
+            return res.json({
+                token: user.gen_jwt(),
+                message: "done"
+            })
         }
     }
 

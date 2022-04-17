@@ -2,18 +2,19 @@ import { useState, useEffect } from 'react'
 import { Row, Col, Card, Button } from 'react-bootstrap'
 import background from "./home.webp";
 import {Link} from "react-router-dom"
+import { ethers } from "ethers"
 
 const Home = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
+
   const loadMarketplaceItems = async () => {
-    
     // Load all unsold items
     const itemCount = await marketplace.itemCount()
     let items = []
     for (let i = 1; i <= itemCount; i++) {
       const item = await marketplace.items(i)
-      if (!item.sold && item.approved && !item.banned) {
+      if (!item.sold) {
         // get uri url from nft contract
         const uri = await nft.tokenURI(item.tokenId)
         // use uri to fetch the nft metadata stored on ipfs 
@@ -32,14 +33,27 @@ const Home = ({ marketplace, nft }) => {
         })
       }
     }
+
     setLoading(false)
     setItems(items)
   }
 
+  const checkLoggedIn = async () => {
+    return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+  } 
+
+  const buyMarketItem = async (item) => {
+    console.log("PRICE: \n\n", item.totalPrice)
+    await (await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })).wait()
+    loadMarketplaceItems()
+  }
+
+
   useEffect(() => {
     loadMarketplaceItems()
-    return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+    checkLoggedIn();
   }, [])
+
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
       <div style={{ backgroundImage: `url(${background})`, width: "100%", height: "80%" }}>
@@ -68,12 +82,9 @@ const Home = ({ marketplace, nft }) => {
                   </Card.Body>
                   <Card.Footer>
                     <div className='d-grid'>
-                      <Link to={`/detail/${item.name}/${item.itemId}`}>
-                        View full Detail
-                      </Link>
-                      {/* <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
+                      <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
                         Buy for {ethers.utils.formatEther(item.totalPrice)} ETH
-                      </Button> */}
+                      </Button>
                     </div>
                   </Card.Footer>
                 </Card>

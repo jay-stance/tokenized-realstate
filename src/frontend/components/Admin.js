@@ -28,6 +28,7 @@ const Admin = ({ marketplace, nft }) => {
           itemId: item.itemId,
           seller: item.seller,
           address: metadata.address,
+          Email: metadata.Email,
           interiorSquareFoot: metadata.interiorSquareFoot,
           rentPerToken: metadata.rentPerToken,
           constructionYear: metadata.constructionYear,
@@ -51,8 +52,13 @@ const Admin = ({ marketplace, nft }) => {
     loadMarketplaceItems()
   }
 
+  const checkLoggedIn = async () => {
+    return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+  } 
+
   useEffect(() => {
     loadMarketplaceItems()
+    checkLoggedIn()
   }, [])
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
@@ -77,6 +83,7 @@ const Admin = ({ marketplace, nft }) => {
                   <Card.Body color="secondary">
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Text>
+                        By: {item.Email} <br/>
                         description: {item.description} <br/>
                         address: {item.address} <br/>
                         Interior square foot: {item.interiorSquareFoot} <br/>

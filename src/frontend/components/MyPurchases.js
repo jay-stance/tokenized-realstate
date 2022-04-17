@@ -5,6 +5,7 @@ import { Row, Col, Card } from 'react-bootstrap'
 export default function MyPurchases({ marketplace, nft, account }) {
   const [loading, setLoading] = useState(true)
   const [purchases, setPurchases] = useState([])
+
   const loadPurchasedItems = async () => {
     // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
     const filter =  marketplace.filters.Bought(null,null,null,null,null,account)
@@ -34,9 +35,16 @@ export default function MyPurchases({ marketplace, nft, account }) {
     setLoading(false)
     setPurchases(purchases)
   }
+
+  const checkLoggedIn = async () => {
+    return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+  } 
+
   useEffect(() => {
     loadPurchasedItems()
+    checkLoggedIn()
   }, [])
+  
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
       <h2>Loading...</h2>

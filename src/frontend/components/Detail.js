@@ -9,6 +9,14 @@ const Detail = ({ marketplace, nft }) => {
     const [amount, setamount] = useState(0);
     const { id} = useParams();
 
+    const checkLoggedIn = async () => {
+        return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+    } 
+
+    useEffect(() => {
+        checkLoggedIn()
+    }, [])
+
     const fetchNFT = async () => {
         const item = await marketplace.items(id)
         const uri = await nft.tokenURI(item.tokenId)
@@ -18,12 +26,18 @@ const Detail = ({ marketplace, nft }) => {
     }
 
     const buyMarketItem = async (item) => {
-        console.log(typeof parseInt(id))
-        console.log(parseInt(id))
-        console.log(typeof parseInt(amount))
-        console.log(parseInt(amount))
-        console.log("BigNumber: second\n\n", new BigNumber(amount))
-        await (await marketplace.purchaseItem(parseInt(id), { value: new BigNumber(amount) })).wait()
+        // const value = amount.toString()
+        // value = window.web3.utils.toWei(value, 'Ether')
+        // const value = (BigNumber(amount*1000000000000000000)).toString(16);
+        const value = parseInt(ethers.utils.formatEther(BigNumber(amount*1000000000000000)));
+        // console.log(typeof parseInt(id))
+        // console.log(parseInt(id))
+        console.log(typeof parseInt(value))
+        console.log(parseInt(value))
+        // console.log("BigNumber: second\n\n",value)
+        const percent = Math.floor((amount/item.price)*100);
+        console.log("percent", percent)
+        await (await marketplace.purchaseItem(parseInt(id),percent, { value })).wait()
         // await (await marketplace.purchaseItem(parseInt(id), { value: parseInt(item.price) })).wait()
         window.location.href = "/";
     }

@@ -1,7 +1,8 @@
 import {
     Link
 } from "react-router-dom";
-import { Navbar, Nav, Button, Container } from 'react-bootstrap'
+import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import bitLand from "./bitland.png";
 
 const Navigation = ({ web3Handler, account }) => {
     
@@ -14,6 +15,10 @@ const Navigation = ({ web3Handler, account }) => {
     return (
         <Navbar expand="lg" bg="secondary" variant="dark">
             <Container>
+                <Navbar.Brand href="#">
+                    <img src={bitLand} width="100" height="40" className="" alt="" />
+                    {/* &nbsp; DApp NFT Marketplace */}
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">

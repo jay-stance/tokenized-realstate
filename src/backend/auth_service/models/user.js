@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.methods.gen_jwt = function() {
-    const token = jwt.sign({ _id: this._id }, config.get("jwt_key"));
+    const token = jwt.sign({ email: this.email }, config.get("jwt_key"));
     return token;
 }
 

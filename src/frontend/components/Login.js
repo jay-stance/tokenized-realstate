@@ -24,12 +24,15 @@ const Login = () => {
     };
     fetch(`http://127.0.0.1:3002/login`, requestOptions)
         .then(response => {
-            response.text()
+            response.json()
                 .then(result => {
-                    if(result == "done") {
+                    console.log("RESULT: \n\n", result)
+                    if(result.message == "done") {
                         localStorage.setItem("loggedIn", true)
+                        localStorage.setItem("token", result.token)
                         window.location.href = "/"
-                    } else if(result == "admin") {
+                    } else if(result.message == "admin") {
+                        localStorage.setItem("token", result.token)
                         localStorage.setItem("loggedIn", true)
                         localStorage.setItem("admin", true)
                         window.location.href = "/"

@@ -3,6 +3,7 @@ import { ethers } from "ethers"
 import { Row, Col, Card } from 'react-bootstrap'
 
 function renderSoldItems(items) {
+
   return (
     <>
       <h2>Sold</h2>
@@ -60,9 +61,16 @@ export default function MyListedItems({ marketplace, nft, account }) {
     setListedItems(listedItems)
     setSoldItems(soldItems)
   }
+
+  const checkLoggedIn = async () => {
+    return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+  } 
+  
   useEffect(() => {
     loadListedItems()
+    checkLoggedIn();
   }, [])
+
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
       <h2>Loading...</h2>

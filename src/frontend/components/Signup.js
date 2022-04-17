@@ -24,10 +24,11 @@ const Signup = () => {
     };
     fetch(`http://127.0.0.1:3002/signup`, requestOptions)
         .then(response => {
-            response.text()
+            response.json()
                 .then(result => {
-                    if(result == "done") {
+                    if(result.message == "done") {
                         localStorage.setItem("loggedIn", true)
+                        localStorage.setItem("token", result.token)
                         window.location.href = "/"
                     } else {
                         window.alert(result)

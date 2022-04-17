@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Form, Button } from 'react-bootstrap'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
@@ -14,6 +14,26 @@ const Create = ({ marketplace, nft }) => {
   const [rentPerToken, setRentPerToken] = useState("")
   const [constructionYear, setConstructionYear] = useState("")
   const [description, setDescription] = useState('')
+  const [Email, SetEmail] = useState('')
+
+  function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
+  const checkLoggedIn = async () => {
+    return localStorage.getItem("loggedIn") ? null: window.location.href = "/login";
+  } 
+
+  useEffect(() => {
+    checkLoggedIn();
+    SetEmail(parseJwt(localStorage.getItem("token")).email)
+  }, [])
   
   const uploadToIPFS = async (event) => {
     event.preventDefault()
@@ -33,7 +53,7 @@ const Create = ({ marketplace, nft }) => {
     try{
       console.log("Always here man \n\n", image, price, name, address, interiorSquareFoot, rentPerToken, constructionYear, description, "\n\n\n")
       const result = await client.add(JSON.stringify({
-        image, price, name, address, interiorSquareFoot, rentPerToken, constructionYear, description
+        image, price, name, address, interiorSquareFoot, rentPerToken, constructionYear, description, Email
       }))
       mintThenList(result)
     } catch(error) {
